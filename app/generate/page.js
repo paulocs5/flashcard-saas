@@ -1,11 +1,18 @@
 'use client'
+<<<<<<< HEAD
 import { Container, TextField, Typography, Paper, Box, Button, Grid, Card, CardActionArea, CardContent } from "@mui/material"
+=======
+import { Container, TextField, Typography } from "@mui/material"
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
 import { useRouter } from "next/router"
 import { useUser } from "@clerk/nextjs"
 import { writeBatch } from "firebase/firestore"
 import { useState } from "react"
+<<<<<<< HEAD
 import { getDoc } from "firebase/firestore"
 import { Graduate } from "next/font/google"
+=======
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
 
 
 export default function Generate() {
@@ -15,7 +22,11 @@ export default function Generate() {
       const{text, setText} = useState('')
       const{name, setName} = useState('')
       const{open, setOpen} = useState(false)
+<<<<<<< HEAD
       const router = useRouter
+=======
+      const router = useRouter()
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
 
       const handleSubmit = async () => {
             fetch('api/generate',{
@@ -25,6 +36,7 @@ export default function Generate() {
             })
             .then ((res) => res.json())
             .then (data > setFlashcards(data))
+<<<<<<< HEAD
       
 
             const handleCardClick = (id) => {
@@ -82,11 +94,73 @@ export default function Generate() {
                   handleClose()
                   router.push('/flashcards')
             }
+=======
+      }
+
+      const handleCardClick = (id) => {
+            setFlipped((prev) => ({
+                  ...prev,
+                  [id]: !prev[id],
+            }))
+
+      }
+
+      const handleOpen = () => {
+            setOpenI(true)
+      }
+
+      const handleClose = () => {
+            setOpenI(false)
+      }
+
+      const setFlashcards = async () => {
+            if(!name) {
+                  alert('Please enter a name')
+                  return
+            }
+      }
+
+      const batch = writeBatch(db)
+      const userDocRef = doc(collection(db, 'users'), user.id)
+      const docSnap = await getDoc(userDocRef)
+
+      //if the name already exist 
+
+      if (docSnap.exist()) {
+            const collections = docSnap.data().flashcards || []
+            if (collections.find((f) => f.name === name)) {
+                  alert('Flashcard colletion with this name already exist')
+                  return
+            } else {
+                  collections.push({name})
+                  batch.set(userDocRef, {flashcards: collections}, {merge: true})
+            }
+      }
+      //if docSnap does not exist
+      else {
+            batch.set(userDocRef, {flashcards: [{name}]})
+
+      // set any individual flashcard
+      const colRef = collection(userDocRef, name)
+      flashcards.forEach((flashcard) => {
+            const cardDocRef = doc(colRef)
+            batch.set(cardDocRef, flashcard)
+      })
+
+            await batch.commit()
+            handleClose()
+            router.push('/flashcards')
+      }
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
 
       return <Container maxWidth="md">
             <Box 
                   sx={{
+<<<<<<< HEAD
                          mt: 4,
+=======
+                        mt: 4,
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
                         mb: 6,
                         display: 'flex',
                         flexDirection: 'column',
@@ -95,6 +169,7 @@ export default function Generate() {
             >
                   <Typography variant="h4"> Generate Flashcards </Typography>
                   <Paper sx={{p: 4, width:'100%'}}>
+<<<<<<< HEAD
                         <TextField 
                               value={text} 
                               onChange={(e) => setText(e.target.value)} 
@@ -115,10 +190,14 @@ export default function Generate() {
                               {' '}
                               Submit to FLashy
                         </Button>
+=======
+                        <TextField value={text} onChange{(e) => settleText}></TextField>
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
 
                   </Paper>
             </Box>
 
+<<<<<<< HEAD
             {flashcards.length > 0 && (
                   <Box sx={{mt: 4}}>
                         <Typography variant="h5"> Preview of your Flashcars </Typography>
@@ -154,3 +233,7 @@ export default function Generate() {
             )}
       </Container>
 }
+=======
+      </Container>
+}
+>>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
