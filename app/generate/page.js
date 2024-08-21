@@ -220,6 +220,4 @@ export default function Generate() {
       </Container>
 }
 
-      </Container>
-}
->>>>>>> ab0c3d6aa6020edbf66b0798b53b7b5a4b3a42af
+
